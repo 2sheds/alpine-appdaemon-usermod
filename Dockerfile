@@ -10,6 +10,7 @@ ARG VCS_URL="https://github.com/2sheds/alpine-appdaemon-usermod"
 
 ARG UID="1001"
 ARG GUID="1001"
+ARG PACKAGES="py3-paramiko"
 ARG DEPS="shadow"
 
 LABEL \
@@ -19,7 +20,8 @@ LABEL \
   org.opencontainers.image.revision="${COMMIT}" \
   org.opencontainers.image.source="${VCS_URL}"
 
-RUN apk add --no-cache --virtual=build-dependencies ${DEPS} && \
+RUN apk add --no-cache ${PACKAGES} && \
+    apk add --no-cache --virtual=build-dependencies ${DEPS} && \
     usermod -u ${UID} appdaemon && groupmod -g ${GUID} appdaemon && \
     apk del build-dependencies && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
