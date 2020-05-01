@@ -25,8 +25,6 @@ ENV WHEELS_LINKS="https://wheels.home-assistant.io/alpine-${ALPINE_VER}/${PKG_AR
 
 RUN apk add --no-cache --virtual=build-dependencies build-base ${DEPS} && \
     usermod -u ${UID} appdaemon && groupmod -g ${GUID} appdaemon && \
-    addgroup -g ${GUID} appdaemon && \
-    adduser -D -G appdaemon -s /bin/sh -u ${UID} appdaemon && \
     pip3 install --upgrade pip && \
     pip3 install --no-cache-dir --prefer-binary --find-links ${WHEEL_LINKS} ${PLUGINS} && \
     apk del build-dependencies && \
