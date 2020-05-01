@@ -10,7 +10,8 @@ ARG VCS_URL="https://github.com/2sheds/alpine-appdaemon-usermod"
 
 ARG UID="1001"
 ARG GUID="1001"
-ARG PACKAGES="py3-paramiko"
+ARG PACKAGES
+ARG PLUGINS="paramiko"
 ARG DEPS="shadow"
 
 LABEL \
@@ -20,9 +21,14 @@ LABEL \
   org.opencontainers.image.revision="${COMMIT}" \
   org.opencontainers.image.source="${VCS_URL}"
 
-RUN apk add --update-cache ${PACKAGES} && \
-    apk add --virtual=build-dependencies ${DEPS} && \
+ENV WHEELS_LINKS="https://wheels.home-assistant.io/alpine-${ALPINE_VER}/${PKG_ARCH}/"
+
+RUN apk add --no-cache --virtual=build-dependencies build-base ${DEPS} && \
     usermod -u ${UID} appdaemon && groupmod -g ${GUID} appdaemon && \
+    addgroup -g ${GUID} appdaemon && \
+    adduser -D -G appdaemon -s /bin/sh -u ${UID} appdaemon && \
+    pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir --prefer-binary --find-links ${WHEEL_LINKS} ${PLUGINS} && \
     apk del build-dependencies && \
-    rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
+    rm -rf /tmp/* /var/tmp/*
 
