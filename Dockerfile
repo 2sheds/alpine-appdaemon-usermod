@@ -20,8 +20,8 @@ LABEL \
   org.opencontainers.image.revision="${COMMIT}" \
   org.opencontainers.image.source="${VCS_URL}"
 
-RUN apk add --no-cache ${PACKAGES} && \
-    apk add --no-cache --virtual=build-dependencies ${DEPS} && \
+RUN apk add --update-cache ${PACKAGES} && \
+    apk add --virtual=build-dependencies ${DEPS} && \
     usermod -u ${UID} appdaemon && groupmod -g ${GUID} appdaemon && \
     apk del build-dependencies && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
