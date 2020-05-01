@@ -1,6 +1,8 @@
 FROM kurapov/alpine-appdaemon
 MAINTAINER Oleg Kurapov <oleg@kurapov.com>
 
+ARG PKG_ARCH="amd64"
+ARG ALPINE_VER="3.11"
 ARG BRANCH="none"
 ARG VERSION="none"
 ARG COMMIT="local-build"
@@ -26,7 +28,7 @@ ENV WHEELS_LINKS="https://wheels.home-assistant.io/alpine-${ALPINE_VER}/${PKG_AR
 RUN apk add --no-cache --virtual=build-dependencies build-base ${DEPS} && \
     usermod -u ${UID} appdaemon && groupmod -g ${GUID} appdaemon && \
     pip3 install --upgrade pip && \
-    pip3 install --no-cache-dir --prefer-binary --find-links ${WHEEL_LINKS} ${PLUGINS} && \
+    pip3 install --no-cache-dir --prefer-binary --find-links ${WHEELS_LINKS} ${PLUGINS} && \
     apk del build-dependencies && \
     rm -rf /tmp/* /var/tmp/*
 
