@@ -14,7 +14,7 @@ ARG UID="1001"
 ARG GUID="1001"
 ARG PACKAGES
 ARG PLUGINS="paramiko"
-ARG DEPS="shadow"
+ARG DEPS="shadow libffi-dev"
 
 LABEL \
   org.opencontainers.image.authors="Oleg Kurapov <oleg@kurapov.com>" \
